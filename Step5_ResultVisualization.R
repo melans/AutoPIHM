@@ -8,15 +8,22 @@
 # 7.
 # 8.
 source('GetReady.R')
-PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
+pp = PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
 
 cfg.para = readpara()
 vns= c("eleysurf","eleyunsat","eleygw",
-       "elevprcp","elevetp", 
+       "elevprcp","elevetp",
        "elevinfil","elevrech",
-       "elevetic", "elevettr", "elevetev",'elevetp', 
+       "elevetic", "elevettr", "elevetev",'elevetp',
        "rivqdown","rivqsub", "rivqsurf","rivystage")
 
 xl=BasicPlot(varname = vns, imap = T)
 
-wb=wb.all(xl=xl, apply.weekly)
+png.control('WaterBalance.png', path=pp$anapath)
+wb=wb.all(xl=xl, apply.weekly, plot = T)
+dev.off()
+
+# gw.mon =apply.monthly(
+#   xl$eleygw, mean)
+# gw.r.mon = MeshData2Raster(gw.mon, stack = T)
+# animate(gw.r.mon)
