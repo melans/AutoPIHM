@@ -26,6 +26,7 @@ stm0 = readOGR(fsp.stm)
 dem.cp=crop(dem0, wbd.gcs)
 # reproject the dem data from GCS to PCS
 dem.pcs=projectRaster(from=dem.cp, crs=crs(wbd0))
+# dem.pcs=dem0
 
 # # save the data
 writeRaster(dem.pcs,filename = file.path(dir.pihmgis, 'dem.tif'), overwrite=TRUE)
