@@ -46,10 +46,10 @@ dir.create(gisout, showWarnings = F, recursive = T)
 AA1=gArea(wbd)
 a.max = AA1/NumCells;
 q.min = 33;
-tol.riv = sqrt(a.max)/2
+tol.riv = sqrt(a.max)/6
 tol.wb = sqrt(a.max)/2
 tol.len = sqrt(a.max)/2
-AqDepth = 10
+AqDepth = 20
 ny=length(years)
 nday = 365*ny + round(ny/4)
 
@@ -178,17 +178,16 @@ mf = MeltFactor(years = years)
 write.tsd(mf, file=fin['md.mf'])
 
 # write PIHM input files.
-writemesh(pm, file = fin['md.mesh'])
-writeriv(pr, file=fin['md.riv'])
-writeinit(pic, file=fin['md.ic'])
+writemesh(backup = FALSE,  pm, file = fin['md.mesh'])
+writeriv(backup = FALSE, pr, file=fin['md.riv'])
+writeinit(backup = FALSE, pic, file=fin['md.ic'])
 
-write.df(pa, file=fin['md.att'])
-write.df(prs, file=fin['md.rivseg'])
+write.df(backup = FALSE, pa, file=fin['md.att'])
+write.df(backup = FALSE, prs, file=fin['md.rivseg'])
 write.df(para.lc, file=fin['md.lc'])
-write.df(para.soil, file=fin['md.soil'])
-write.df(para.geol, file=fin['md.geol'])
+write.df(backup = FALSE, para.soil, file=fin['md.soil'])
+write.df(backup = FALSE, para.geol, file=fin['md.geol'])
 
-write.pc(cfg.para, fin['md.para'])
-write.pc(cfg.calib, fin['md.calib'])
+write.config(backup = FALSE, cfg.para, fin['md.para'])
+write.config(backup = FALSE, cfg.calib, fin['md.calib'])
 print(nrow(pm@mesh))
-
