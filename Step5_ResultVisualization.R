@@ -10,7 +10,6 @@
 source('GetReady.R')
 pp = PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
 
-cfg.para = readpara()
 vns= c("eleysurf","eleyunsat","eleygw",
        "elevprcp","elevetp",
        "elevinfil","elevrech",
