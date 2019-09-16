@@ -17,6 +17,7 @@
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
   fn.prj='project.txt'
+  # fn.prj='pongo.txt'
 }else{
   print(args)
   fn.prj = args[1]
@@ -43,9 +44,13 @@ fsp.stm = cdir['fsp.stm']
 
 fr.dem=cdir['fr.dem']
 fr.landuse = cdir['fr.landuse']
-NumCells = as.numeric(cdir['NumCell'])
+NumCells = as.numeric(cdir['NumCells'])
 if(is.null(NumCells) | is.na(NumCells)){
   NumCells = 1000;
+}
+AqDepth = as.numeric(cdir['AqDepth'])
+if(is.null(AqDepth) | is.na(AqDepth)){
+  AqDepth = 10;
 }
 # years=2017:2018
 dir.png =file.path(dir.out, 'Image')
@@ -68,9 +73,7 @@ library(GGally)
 library(hydroTSM)
 library(hydroGOF)
 
-
 crs.gcs = sp::CRS('+init=epsg:4326')
-
 
 # Some Constant values in the working environments.
 dist.buffer = 2000 #distance to build the buffer region.
