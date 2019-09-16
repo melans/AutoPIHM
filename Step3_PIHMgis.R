@@ -16,7 +16,7 @@ riv=readOGR(file.path(dir.pihmgis, 'stm.shp'))
 dem=raster(file.path(dir.pihmgis, 'dem.tif'))
 sp.forc=readOGR(file.path(dir.pihmgis, 'FLDAS.shp') )
 sp.forc
-wbd.buf=gBuffer(wbd, width=2000)
+wbd.buf=gBuffer(wbd, width=dist.buffer)
 
 png.control(fn=paste0('PIHMgis_','data', '.png'), path = dir.png, ratio=1)
 plot(dem);grid()
@@ -49,14 +49,14 @@ q.min = 33;
 tol.riv = sqrt(a.max)/6
 tol.wb = sqrt(a.max)/2
 tol.len = sqrt(a.max)/2
-AqDepth = 20
+# AqDepth = 20
 ny=length(years)
-nday = 365*ny + round(ny/4)
+nday = 365*ny + round(ny/4) - 1
 
 rlc = raster(file.path(dir.pihmgis, 'Landuse_nlcd.tif'))
 alc = unique(rlc)
 
-wbbuf = rgeos::gBuffer(wbd, width = 2000)
+wbbuf = rgeos::gBuffer(wbd, width = dist.buffer)
 dem = raster::crop(dem, wbbuf)
 
 png(file = file.path(pngout, 'data_0.png'), height=11, width=11, res=100, unit='in')
