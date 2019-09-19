@@ -13,21 +13,22 @@ cdir=getwd()
 destfile=file.path(dir.out, 'PIHM_github.zip')
 download.file(url='https://github.com/shulele/PIHM-4.0/archive/master.zip',
               destfile = destfile)
+
 # unzip and compile PIHM++.
 unzip(zipfile = destfile, exdir = dir.out)
 setwd(file.path(dir.out, 'PIHM-4.0-master'))
 cmd='make clean & make pihm'
 message('Compile PIHM: ')
 message('\t', cmd)
-log=system(cmd, wait = T, intern = TRUE)
-write(log, file.path(dir.pihmout, paste0(prjname, '.log') ) )
+system(cmd, wait = T, intern = FALSE)
 file.rename(from='pihm++', to ='../pihm++')
+
 # Run PIHM
 setwd('../')
 cmd = paste( paste('./pihm++ ', prjname) )
 message('Run PIHM: ')
 message('\t', cmd)
-# sout <-system(cmd, wait = T,intern=TRUE, ignore.stdout = FALSE,
-#               ignore.stderr = FALSE)
-# sout
+sout <-system(cmd, wait = T,intern=TRUE, ignore.stdout = FALSE,
+              ignore.stderr = FALSE)
+write(sout, file.path(dir.pihmout, paste0(prjname, '.log') ) )
 setwd(cdir)
