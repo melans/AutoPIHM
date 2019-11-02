@@ -8,8 +8,28 @@
 # 7.
 # 8.
 source('GetReady.R')
+
+prjname='pongo'
+dir.pihmin = '/Users/leleshu/Downloads/output/input/pongo/'
+dir.pihmout = '/Users/leleshu/Downloads/output/output/pongo.out/'
 pp = PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
 
+dir.csv = file.path(dir.pihmout, 'CSV')
+dir.create(dir.csv, showWarnings = FALSE, recursive = TRUE)
+
+#===== Model Information ===================
+spr=rgdal::readOGR(file.path(pp$inpath, 'gis', 'river.shp'))
+ModelInfo( crs.pcs = raster::crs(spr))
+
+#=====EXPORT Discharge at Outlet ===================
+oid=getOutlets()
+qq=readout('rivqdown')
+p=rowMeans(readout('elevprcp'))
+qout =qq[,oid]; time(qout)=as.Date(time(qout))
+pq=cbind('Precipitation_m/d'=p, 'Discharge_m3/d'=qout)
+write.xts(pq, file = file.path(dir.csv, 'Precip_Discharge.csv'))
+
+#=====Load data and basic plot ===================
 vns= c("eleysurf","eleyunsat","eleygw",
        "elevprcp","elevetp",
        "elevinfil","elevrech",
@@ -17,12 +37,9 @@ vns= c("eleysurf","eleyunsat","eleygw",
        "rivqdown","rivqsub", "rivqsurf","rivystage")
 
 xl=BasicPlot(varname = vns, imap = T)
+# xl=readRDS('/Users/leleshu/Downloads/output/output/pongo.out/BasicPlot.RDS')
 
+#===== Waterbalance ===================
 png.control('WaterBalance.png', path=pp$anapath)
 wb=wb.all(xl=xl, apply.weekly, plot = T)
 dev.off()
-
-# gw.mon =apply.monthly(
-#   xl$eleygw, mean)
-# gw.r.mon = MeshData2Raster(gw.mon, stack = T)
-# animate(gw.r.mon)
