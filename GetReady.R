@@ -17,7 +17,7 @@
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
   fn.prj='project.txt'
-  # fn.prj='pongo.txt'
+  # fn.prj='pongo1660.txt'
 }else{
   print(args)
   fn.prj = args[1]
@@ -33,7 +33,7 @@ if(file.exists(fn.prj)){
 
 dir.rawdata=cdir['dir.rawdata']
 dir.soil = cdir['dir.soil']
-dir.fldas = cdir['dir.fldas']
+dir.forc = cdir['dir.forc']
 dir.out = cdir['dir.out']
 
 prjname=cdir['prjname']
