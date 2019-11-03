@@ -8,18 +8,13 @@
 # 7.
 # 8.
 source('GetReady.R')
-
-prjname='pongo'
-dir.pihmin = '/Users/leleshu/Downloads/output/input/pongo/'
-dir.pihmout = '/Users/leleshu/Downloads/output/output/pongo.out/'
 pp = PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
-
 dir.csv = file.path(dir.pihmout, 'CSV')
 dir.create(dir.csv, showWarnings = FALSE, recursive = TRUE)
 
 #===== Model Information ===================
-spr=rgdal::readOGR(file.path(pp$inpath, 'gis', 'river.shp'))
-ModelInfo( crs.pcs = raster::crs(spr))
+spr=rgdal::readOGR(file.path(PIHM.filein()['inpath'], 'gis', 'river.shp'))
+ModelInfo(crs.pcs = raster::crs(spr), spr=spr)
 
 #=====EXPORT Discharge at Outlet ===================
 oid=getOutlets()
