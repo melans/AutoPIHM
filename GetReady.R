@@ -33,25 +33,26 @@ if(file.exists(fn.prj)){
 }else{
   stop('File missing: ', fn.prj)
 }
-
-dir.rawdata=cdir['dir.rawdata']
-dir.soil = cdir['dir.soil']
-dir.ldas = cdir['dir.ldas']
-dir.out = cdir['dir.out']
+varname = tolower(names(cdir))
+dir.rawdata=cdir[which(grepl('rawdata', varname))]
+dir.soil = cdir[which(grepl('soil', varname))]
+dir.ldas = cdir[which(grepl('ldas', varname))]
+dir.out = cdir[which(grepl('dir.out', varname))]
 
 prjname=cdir['prjname']
 years=as.numeric(cdir['startyear']): as.numeric(cdir['endyear'])
 
-fsp.wbd = cdir['fsp.wbd']
-fsp.stm = cdir['fsp.stm']
+fsp.wbd = cdir[which(grepl('wbd', varname))]
+fsp.stm = cdir[which(grepl('stm', varname))]
 
-fr.dem=cdir['fr.dem']
-fr.landuse = cdir['fr.landuse']
-NumCells = as.numeric(cdir['NumCells'])
+fr.dem= cdir[which(grepl('dem', varname))]
+fr.landuse = cdir[which(grepl('landuse', varname))]
+NumCells = as.numeric(cdir[which(grepl('numcells', varname))] )
+
 if(is.null(NumCells) | is.na(NumCells)){
   NumCells = 1000;
 }
-AqDepth = as.numeric(cdir['AqDepth'])
+AqDepth = as.numeric(cdir[which(grepl('aqdepth', varname))])
 if(is.null(AqDepth) | is.na(AqDepth)){
   AqDepth = 10;
 }
