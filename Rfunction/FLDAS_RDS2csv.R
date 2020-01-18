@@ -22,7 +22,6 @@ unitConvert <- function(x){
 
 
 fns = file.path(dir.pihmgis, paste0(prjname,'-', years, '.RDS'))
-
 cns = c('Rainf_f_tavg', 'Tair_f_tavg','Qair_f_tavg',
         'Wind_f_tavg', 'Swnet_tavg','Lwnet_tavg', 
         'Psurf_f_tavg')
@@ -54,13 +53,18 @@ nx=length(xl)
 sitename = dn[[1]]
 sitename
 fns=paste0(sitename, '.csv')
+nk=0
 for(i in 1:nx){
   fn=fns[i]
   write.tsd(xl[[i]], file.path(dir.forc, fn), backup = FALSE)
-  if(i==1){
-    xmean = xl[[i]]
+  if(sum(is.na(xl[[i]]))>nrow(xl[[i]])){
+    print(i)
   }else{
-    xmean = xmean + xl[[i]]
+    if(i==1){
+      xmean = xl[[i]]
+    }else{
+      xmean = xmean + xl[[i]]
+    }
   }
 }
 png.control(fn=paste0('Rawdata','_FLDAS_TS.png'), path = file.path(dir.png), ratio=1)

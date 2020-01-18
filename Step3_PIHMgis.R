@@ -44,7 +44,8 @@ dir.create(pngout, showWarnings = F, recursive = T)
 dir.create(gisout, showWarnings = F, recursive = T)
 
 AA1=gArea(wbd)
-a.max = AA1/NumCells;
+a.max = min(AA1/NumCells, MaxArea * 1e6);
+
 q.min = 33;
 tol.riv = sqrt(a.max)/6
 tol.wb = sqrt(a.max)/2
