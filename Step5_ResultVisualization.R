@@ -30,11 +30,25 @@ vns= c("eleysurf","eleyunsat","eleygw",
        "elevinfil","elevrech",
        "elevetic", "elevettr", "elevetev",'elevetp',
        "rivqdown","rivqsub", "rivqsurf","rivystage")
-
-xl=BasicPlot(varname = vns, imap = T)
-# xl=readRDS('/Users/leleshu/Downloads/output/output/pongo.out/BasicPlot.RDS')
+# xl=BasicPlot(varname = vns, imap = T)
+# xl=BasicPlot(varname = vns, imap = F, plot = F)
+xl=readRDS(file.path(pp$outpath, 'BasicPlot.RDS'))
 
 #===== Waterbalance ===================
 png.control('WaterBalance.png', path=pp$anapath)
 wb=wb.all(xl=xl, apply.weekly, plot = T)
 dev.off()
+png.control('WaterBalance_River.png', path=pp$anapath)
+wbr = wb.riv(xl=xl, fun = apply.weekly)
+dev.off()
+wb2csv <- function(wb, fn){
+  x = data.frame( 'JDN'=strftime(time(wb), '%Y%j'), wb)
+  write.table(x, fn, quote = FALSE, row.names = FALSE)
+}
+wb2csv(wb, file.path(pp$anapath, 'waterbalance.csv'))
+wb2csv(wbr, file.path(pp$anapath, 'waterbalance_river.csv'))
+
+id=getCriticalRiver()
+y=xl$rivqdown[,id]; colnames(y) = paste0('X', id)
+wb2csv(y, file.path(pp$anapath, 'CriticalRiver_m3d.csv'))
+
