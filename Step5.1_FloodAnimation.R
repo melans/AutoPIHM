@@ -4,19 +4,18 @@
 # Output is geotiff file with multiple layers.
 # 
 source('GetReady.R')
-PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
-wbd=readOGR(file.path(dir.pihmgis, 'wbd.shp'))
+pp = PIHM(prjname = prjname, inpath = dir.pihmin, outpath = dir.pihmout)
+wbd=readOGR(file.path(pp$inpath, 'gis', 'domain.shp'))
 crs.pcs = crs(wbd)
 cfg.para = readpara()
 vns= c("eleysurf", "eleygw")
-xl=BasicPlot(varname = vns, plot=F, imap=F)
+xl=BasicPlot(varname = vns, plot=F, imap=F, iRDS = FALSE)
 
-fx <- function(x, key, outdir=file.path(dir.pihmout, 'vis'),
-               crs){
+fx <- function(x, key, outdir=file.path(dir.pihmout, 'vis'), crs){
   dir.create(outdir, showWarnings = F, recursive = T)
   
   x.mon=apply.monthly(x, function(x, func){apply(x, 2, func)}, func = max)
-  rs=MeshData2Raster(x.mon, stack = T, proj=crs)
+  rs=MeshData2Raster(x.mon, stack = T, crs=crs)
   cn=paste0(key, strftime(time(x.mon), '%Y-%m') )
   cn
   names(rs) = cn
@@ -31,7 +30,9 @@ fx <- function(x, key, outdir=file.path(dir.pihmout, 'vis'),
     fn=paste0(cn[i], '.png')
     message(i,'/', nx, '\t', fn)
     png.control(fn, path = outdir)
-    plot(xm[[i]])
+    par(mar=c(1,1,1,2))
+    plot(xm[[i]], axes=FALSE)
+    title(cn[i])
     dev.off()
   }
 }
