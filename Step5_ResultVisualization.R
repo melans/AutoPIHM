@@ -39,7 +39,7 @@ vns= c("eleysurf","eleyunsat","eleygw",
        "elevinfil","elevrech",
        "elevetic", "elevettr", "elevetev",'elevetp',
        "rivqdown","rivqsub", "rivqsurf","rivystage")
-debug(BasicPlot)
+# debug(BasicPlot)
 xl=BasicPlot(varname = vns, imap = TRUE, plot=TRUE)
 # xl=BasicPlot(varname = vns, imap = FALSE, plot = FALSE)
 xl=readRDS(file.path(pp$outpath, 'BasicPlot.RDS'))
