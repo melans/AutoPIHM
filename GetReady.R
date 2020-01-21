@@ -17,10 +17,10 @@
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
   fn.prj='project.txt'
-  fn.prj='Awash.txt'
-  # fn.prj='Muger.txt'
-  # fn.prj='Guder.txt'
-  # fn.prj='pongo1660.txt'
+  # fn.prj='./project/Awash.txt'
+  # fn.prj='./project/Muger.txt'
+  # fn.prj='./project/Guder.txt'
+  # fn.prj='./project/pongo1660.txt'
 }else{
   print(args)
   fn.prj = args[1]
@@ -48,13 +48,16 @@ fsp.stm = cdir[which(grepl('stm', varname))]
 fr.dem= cdir[which(grepl('dem', varname))]
 fr.landuse = cdir[which(grepl('landuse', varname))]
 NumCells = as.numeric(cdir[which(grepl('numcells', varname))] )
-
 if(is.null(NumCells) | is.na(NumCells)){
   NumCells = 1000;
 }
 AqDepth = as.numeric(cdir[which(grepl('aqdepth', varname))])
 if(is.null(AqDepth) | is.na(AqDepth)){
   AqDepth = 10;
+}
+MaxArea = as.numeric(cdir[which(grepl('maxarea', varname))] )
+if(is.null(MaxArea) | is.na(MaxArea)){
+  MaxArea = 20;
 }
 # years=2017:2018
 dir.png =file.path(dir.out, 'Image')
