@@ -9,7 +9,7 @@
 # 6. Years for simulation. startYear and endYear
 # 7. Output path.
 
-# Task: 
+# Task:
 # 1. Set the path to rawdata, output, project name
 # 2. Load libraries.
 # 3. Create the folders.
@@ -85,5 +85,10 @@ crs.gcs = sp::CRS('+init=epsg:4326')
 # Some Constant values in the working environments.
 dist.buffer = 2000 #distance to build the buffer region.
 
-ext.fldas = c(22,51.4, -11.8, 23.0) # Range of FLDAS East Africa.
-res=0.1 # 0.1 deg resolution in FLDAS
+ext.fldas = c(22, 51.4, -11.8, 23.0) # Range of FLDAS East Africa.
+# 0.1 deg resolution in FLDAS
+# 0.25 deg resolution in GLDAS
+res=as.numeric(cdir['weather.res'])
+if(is.null(res) | is.na(res)){
+  res = 0.1;
+}
