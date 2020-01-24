@@ -32,19 +32,20 @@ forc.fns=paste0('X', round(sp.forc$xcenter, 2) * 100, 'Y', round(sp.forc$ycenter
 indata =list(wbd=wbd, riv=riv, dem=dem)
 graphics.off()
 
-pihmout <- dir.pihmin
-fin <- PIHM.filein(prjname, indir = pihmout)
-x=list.files(pihmout, pattern = glob2rx(paste0(prjname, '.*.*')), full.names = T)
+
+fin <- PIHM.filein(prjname, inpath = dir.pihmin, outpath=dir.pihmout)
+x=list.files(dir.pihmin, pattern = glob2rx(paste0(prjname, '.*.*')), full.names = T)
 file.remove(x)
 
-pngout = file.path(pihmout, 'fig')
-gisout = file.path(pihmout, 'gis')
-dir.create(pihmout, showWarnings = F, recursive = T)
+pngout = file.path(dir.pihmin, 'fig')
+gisout = file.path(dir.pihmin, 'gis')
+dir.create(dir.pihmin, showWarnings = F, recursive = T)
 dir.create(pngout, showWarnings = F, recursive = T)
 dir.create(gisout, showWarnings = F, recursive = T)
 
 AA1=gArea(wbd)
-a.max = AA1/NumCells;
+a.max = min(AA1/NumCells, MaxArea * 1e6);
+
 q.min = 33;
 tol.riv = sqrt(a.max)/6
 tol.wb = sqrt(a.max)/2
@@ -106,7 +107,8 @@ writeforc(forc.fns, path='forcing', file=fin['md.forc'])
 
 # generate PIHM .riv
 pr=pihmRiver(riv.simp, dem)
-pr@rivertype[, 'Width']= seq(40, 60, length.out = nrow(pr@rivertype))* log(AA1)
+pr@rivertype[, 'Width']= seq(40, 60, 
+                             length.out = nrow(pr@rivertype))* log(AA1)
 # Correct river slope to avoid negative slope
 # pr = correctRiverSlope(pr)
 
@@ -155,8 +157,17 @@ para.lc = read.table(file.path(dir.pihmgis,'LanduseTable.csv'), header = T)
 asoil=SoilGeol(spm=spm, rdsfile = file.path(dir.pihmgis, 'Soil_sl1.RDS')  )
 ageol=SoilGeol(spm=spm, rdsfile = file.path(dir.pihmgis, 'Soil_sl7.RDS')  )
 
-para.soil = PTF.soil(asoil)
-para.geol = PTF.geol(ageol)
+fixNA <- function(x){
+  for(i in 1:ncol(x)){
+    cv=x[,i]
+    cv[is.na(cv)| is.infinite(cv)] = mean(cv, na.rm=TRUE)
+    x[,i] = cv
+  }
+  x
+}
+
+para.soil = PTF.soil(fixNA(asoil),  rm.outlier = TRUE)
+para.geol = PTF.geol(fixNA(ageol),  rm.outlier = TRUE)
 
 # 43-mixed forest in NLCD classification
 # 23-developed, medium           

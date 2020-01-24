@@ -22,11 +22,16 @@ wbd.gcs=spTransform(wbd.buf, CRSobj = crs.gcs )
 # Stream Network
 stm0 = readOGR(fsp.stm)
 
-# crop elevation data
-dem.cp=crop(dem0, wbd.gcs)
-# reproject the dem data from GCS to PCS
-dem.pcs=projectRaster(from=dem.cp, crs=crs(wbd0))
-# dem.pcs=dem0
+if(grepl('longlat', tolower(raster::crs(dem0)))){
+  # crop elevation data
+  dem.cp=crop(dem0, wbd.gcs)
+  # reproject the dem data from GCS to PCS
+  dem.pcs=projectRaster(from=dem.cp, crs=crs(wbd0))
+  # dem.pcs=dem0
+}else{
+  dem.cp = crop(dem0, wbd)
+  dem.pcs = dem.cp
+}
 
 # # save the data
 writeRaster(dem.pcs,filename = file.path(dir.pihmgis, 'dem.tif'), overwrite=TRUE)

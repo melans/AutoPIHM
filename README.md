@@ -1,6 +1,11 @@
 # AutoPIHM
 
+Notice: This version of AutoPIHM will not be updated anymore.  
+
+The newer version of the modeling system is transferred to [SHUD project](https://shud.xyz) via [www.shud.xyz](www.shud.xyz). 
+
 # Requisite
+
 1. R 
 2. GDAL
 2. Several R packages. (*raster* ,*sp* ,*rgeos* ,*rgdal* ,*PIHMgisR* ,*lattice* ,*ggplot2* ,*GGally* ,*hydroTSM* ,*hydroGOF*). 
